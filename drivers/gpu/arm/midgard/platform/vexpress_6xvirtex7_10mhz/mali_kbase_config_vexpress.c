@@ -26,7 +26,7 @@
 
 #include <backend/gpu/mali_kbase_pm_internal.h>
 
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 static struct kbase_io_resources io_resources = {
 	.job_irq_number = 75,
 	.mmu_irq_number = 76,
@@ -55,7 +55,7 @@ struct kbase_pm_callback_conf pm_callbacks = {
 };
 
 static struct kbase_platform_config versatile_platform_config = {
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 	.io_resources = &io_resources
 #endif
 };

@@ -391,7 +391,7 @@ static void kbasep_devfreq_read_suspend_clock(struct kbase_device *kbdev,
 
 static int kbase_devfreq_init_core_mask_table(struct kbase_device *kbdev)
 {
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 	/* OPP table initialization requires at least the capability to get
 	 * regulators and clocks from the device tree, as well as parsing
 	 * arrays of unsigned integer values.
@@ -525,7 +525,7 @@ static int kbase_devfreq_init_core_mask_table(struct kbase_device *kbdev)
 	kbdev->num_opps = i;
 
 	return 0;
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 }
 
 static const char *kbase_devfreq_req_type_name(enum kbase_devfreq_work_type type)

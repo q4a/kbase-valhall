@@ -28,7 +28,7 @@
 #include <linux/compat.h>
 #include <linux/version.h>
 #include <linux/log2.h>
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 #include <linux/of_platform.h>
 #endif
 
@@ -1222,7 +1222,7 @@ int kbase_mem_init(struct kbase_device *kbdev)
 {
 	int err = 0;
 	struct kbasep_mem_device *memdev;
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	struct device_node *mgm_node = NULL;
 #endif
 
@@ -1250,7 +1250,7 @@ int kbase_mem_init(struct kbase_device *kbdev)
 
 	kbdev->mgm_dev = &kbase_native_mgm_dev;
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	/* Check to see whether or not a platform-specific memory group manager
 	 * is configured and available.
 	 */

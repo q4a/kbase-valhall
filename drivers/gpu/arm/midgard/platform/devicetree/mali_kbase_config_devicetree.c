@@ -30,7 +30,7 @@ struct kbase_platform_config *kbase_get_platform_config(void)
 	return &dummy_platform_config;
 }
 
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 int kbase_platform_register(void)
 {
 	return 0;

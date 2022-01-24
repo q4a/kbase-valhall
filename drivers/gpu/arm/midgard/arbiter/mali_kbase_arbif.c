@@ -178,7 +178,7 @@ static void on_gpu_lost(struct device *dev)
  */
 int kbase_arbif_init(struct kbase_device *kbdev)
 {
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	struct arbiter_if_arb_vm_ops ops;
 	struct arbiter_if_dev *arb_if;
 	struct device_node *arbiter_if_node;
@@ -239,7 +239,7 @@ int kbase_arbif_init(struct kbase_device *kbdev)
 		}
 	}
 
-#else /* CONFIG_OF */
+#else /* CONFIG_OF_FOO */
 	dev_dbg(kbdev->dev, "No arbiter without Device Tree support\n");
 	kbdev->arb.arb_dev = NULL;
 	kbdev->arb.arb_if = NULL;

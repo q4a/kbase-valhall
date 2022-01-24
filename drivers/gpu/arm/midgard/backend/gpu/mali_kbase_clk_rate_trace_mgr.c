@@ -52,7 +52,7 @@ get_clk_rate_trace_callbacks(__maybe_unused struct kbase_device *kbdev)
 	/* base case */
 	struct kbase_clk_rate_trace_op_conf *callbacks =
 		(struct kbase_clk_rate_trace_op_conf *)CLK_RATE_TRACE_OPS;
-#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF)
+#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF_FOO)
 	const void *arbiter_if_node;
 
 	if (WARN_ON(!kbdev) || WARN_ON(!kbdev->dev))

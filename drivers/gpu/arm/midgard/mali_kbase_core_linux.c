@@ -443,7 +443,7 @@ int assign_irqs(struct kbase_device *kbdev)
 			return -ENOENT;
 		}
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 		if (!strncasecmp(irq_res->name, "JOB", 4)) {
 			irqtag = JOB_IRQ_TAG;
 		} else if (!strncasecmp(irq_res->name, "MMU", 4)) {
@@ -457,7 +457,7 @@ int assign_irqs(struct kbase_device *kbdev)
 		}
 #else
 		irqtag = i;
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 		kbdev->irqs[irqtag].irq = irq_res->start;
 		kbdev->irqs[irqtag].flags = irq_res->flags & IRQF_TRIGGER_MASK;
 	}
@@ -4279,7 +4279,7 @@ void registers_unmap(struct kbase_device *kbdev)
 	kbase_common_reg_unmap(kbdev);
 }
 
-#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF)
+#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF_FOO)
 
 static bool kbase_is_pm_enabled(const struct device_node *gpu_node)
 {
@@ -4332,13 +4332,13 @@ static bool kbase_is_full_coherency_enabled(const struct device_node *gpu_node)
 	return false;
 }
 
-#endif /* CONFIG_MALI_ARBITER_SUPPORT && CONFIG_OF */
+#endif /* CONFIG_MALI_ARBITER_SUPPORT && CONFIG_OF_FOO */
 
 int kbase_device_pm_init(struct kbase_device *kbdev)
 {
 	int err = 0;
 
-#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF)
+#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF_FOO)
 
 	u32 gpu_id;
 	u32 product_id;
@@ -4383,19 +4383,19 @@ int kbase_device_pm_init(struct kbase_device *kbdev)
 	}
 #else
 	err = power_control_init(kbdev);
-#endif /* CONFIG_MALI_ARBITER_SUPPORT && CONFIG_OF */
+#endif /* CONFIG_MALI_ARBITER_SUPPORT && CONFIG_OF_FOO */
 	return err;
 }
 
 void kbase_device_pm_term(struct kbase_device *kbdev)
 {
 #ifdef CONFIG_MALI_ARBITER_SUPPORT
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	if (kbase_is_pv_enabled(kbdev->dev->of_node))
 		kbase_arbiter_pm_early_term(kbdev);
 	else
 		power_control_term(kbdev);
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 #else
 	power_control_term(kbdev);
 #endif
@@ -4403,7 +4403,7 @@ void kbase_device_pm_term(struct kbase_device *kbdev)
 
 int power_control_init(struct kbase_device *kbdev)
 {
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 	/* Power control initialization requires at least the capability to get
 	 * regulators and clocks from the device tree, as well as parsing
 	 * arrays of unsigned integer values.
@@ -4517,7 +4517,7 @@ clocks_probe_defer:
 		regulator_put(kbdev->regulators[i]);
 #endif
 	return err;
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 }
 
 void power_control_term(struct kbase_device *kbdev)
@@ -4543,7 +4543,7 @@ void power_control_term(struct kbase_device *kbdev)
 			break;
 	}
 
-#if defined(CONFIG_OF) && defined(CONFIG_REGULATOR)
+#if defined(CONFIG_OF_FOO) && defined(CONFIG_REGULATOR)
 	for (i = 0; i < BASE_MAX_NR_CLOCKS_REGULATORS; i++) {
 		if (kbdev->regulators[i]) {
 			regulator_put(kbdev->regulators[i]);
@@ -4828,7 +4828,7 @@ void kbase_device_debugfs_term(struct kbase_device *kbdev)
 
 int kbase_device_coherency_init(struct kbase_device *kbdev)
 {
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	u32 supported_coherency_bitmap =
 		kbdev->gpu_props.props.raw_props.coherency_mode;
 	const void *coherency_override_dts;
@@ -4850,12 +4850,12 @@ int kbase_device_coherency_init(struct kbase_device *kbdev)
 			supported_coherency_bitmap |=
 				COHERENCY_FEATURE_BIT(COHERENCY_ACE_LITE);
 
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 
 	kbdev->system_coherency = COHERENCY_NONE;
 
 	/* device tree may override the coherency */
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	coherency_override_dts = of_get_property(kbdev->dev->of_node,
 						"system-coherency",
 						NULL);
@@ -4889,7 +4889,7 @@ int kbase_device_coherency_init(struct kbase_device *kbdev)
 				override_coherency);
 	}
 
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 
 	kbdev->gpu_props.props.raw_props.coherency_mode =
 		kbdev->system_coherency;
@@ -5429,7 +5429,7 @@ static const struct dev_pm_ops kbase_pm_ops = {
 #endif /* KBASE_PM_RUNTIME */
 };
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 static const struct of_device_id kbase_dt_ids[] = {
 	{ .compatible = "arm,malit6xx" },
 	{ .compatible = "arm,mali-midgard" },
@@ -5454,7 +5454,7 @@ static struct platform_driver kbase_platform_driver = {
  * The driver will not provide a shortcut to create the Mali platform device
  * anymore when using Device Tree.
  */
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 module_platform_driver(kbase_platform_driver);
 #else
 
@@ -5483,7 +5483,7 @@ static void __exit kbase_driver_exit(void)
 module_init(kbase_driver_init);
 module_exit(kbase_driver_exit);
 
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 
 MODULE_LICENSE("GPL");
 MODULE_VERSION(MALI_RELEASE_NAME " (UK version " \

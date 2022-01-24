@@ -147,7 +147,7 @@ int kbase_csf_timeout_init(struct kbase_device *const kbdev)
 	u64 timeout = DEFAULT_PROGRESS_TIMEOUT;
 	int err;
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	err = of_property_read_u64(kbdev->dev->of_node,
 		"progress_timeout", &timeout);
 	if (!err)

@@ -423,7 +423,7 @@ struct kbase_clk_rate_trace_op_conf {
 		void *gpu_clk_handle, struct notifier_block *nb);
 };
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 struct kbase_platform_config {
 };
 #else
@@ -450,7 +450,7 @@ struct kbase_platform_config {
 	const struct kbase_io_resources *io_resources;
 };
 
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 
 /**
  * kbase_get_platform_config - Gets the pointer to platform config.
@@ -561,7 +561,7 @@ void kbasep_platform_event_atom_submit(struct kbase_jd_atom *katom);
 void kbasep_platform_event_atom_complete(struct kbase_jd_atom *katom);
 #endif
 
-#ifndef CONFIG_OF
+#ifndef CONFIG_OF_FOO
 /**
  * kbase_platform_register - Register a platform device for the GPU
  *

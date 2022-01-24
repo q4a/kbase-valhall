@@ -113,7 +113,7 @@ int kbase_device_pcm_dev_init(struct kbase_device *const kbdev)
 {
 	int err = 0;
 
-#if IS_ENABLED(CONFIG_OF)
+#if IS_ENABLED(CONFIG_OF_FOO)
 	struct device_node *prio_ctrl_node;
 
 	/* Check to see whether or not a platform specific priority control manager
@@ -147,7 +147,7 @@ int kbase_device_pcm_dev_init(struct kbase_device *const kbdev)
 		}
 		of_node_put(prio_ctrl_node);
 	}
-#endif /* CONFIG_OF */
+#endif /* CONFIG_OF_FOO */
 
 	return err;
 }

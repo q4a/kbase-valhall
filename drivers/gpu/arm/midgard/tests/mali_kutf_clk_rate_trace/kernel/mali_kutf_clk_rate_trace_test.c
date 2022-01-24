@@ -435,7 +435,7 @@ static char const *kutf_clk_trace_do_get_platform(
 	const void *arbiter_if_node = NULL;
 	const void *power_node = NULL;
 	const char *platform = "GPU";
-#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF)
+#if defined(CONFIG_MALI_ARBITER_SUPPORT) && defined(CONFIG_OF_FOO)
 	struct kutf_clk_rate_trace_fixture_data *data = context->fixture;
 
 	arbiter_if_node =
