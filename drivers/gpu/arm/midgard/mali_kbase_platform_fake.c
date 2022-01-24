@@ -37,6 +37,7 @@
 
 static struct platform_device *mali_device;
 
+#if 0
 #ifndef CONFIG_OF_FOO
 /**
  * Convert data in struct kbase_io_resources struct to Linux-specific resources
@@ -73,12 +74,15 @@ static void kbasep_config_parse_io_resources(const struct kbase_io_resources *io
 	linux_resources[3].flags = IORESOURCE_IRQ | IORESOURCE_IRQ_HIGHLEVEL;
 }
 #endif /* CONFIG_OF_FOO */
+#endif
 
 int kbase_platform_register(void)
 {
 	struct kbase_platform_config *config;
+#if 0
 #ifndef CONFIG_OF_FOO
 	struct resource resources[PLATFORM_CONFIG_RESOURCE_COUNT];
+#endif
 #endif
 	int err;
 
@@ -92,6 +96,7 @@ int kbase_platform_register(void)
 	if (mali_device == NULL)
 		return -ENOMEM;
 
+#if 0
 #ifndef CONFIG_OF_FOO
 	kbasep_config_parse_io_resources(config->io_resources, resources);
 	err = platform_device_add_resources(mali_device, resources, PLATFORM_CONFIG_RESOURCE_COUNT);
@@ -101,6 +106,7 @@ int kbase_platform_register(void)
 		return err;
 	}
 #endif /* CONFIG_OF_FOO */
+#endif
 
 	err = platform_device_add(mali_device);
 	if (err) {
