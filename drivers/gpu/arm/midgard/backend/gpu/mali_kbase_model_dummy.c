@@ -216,7 +216,7 @@ void *gpu_device_get_data(void *model)
  * in-tree) won't, so define one here in case.
  */
 #ifndef CONFIG_MALI_NO_MALI_DEFAULT_GPU
-#define CONFIG_MALI_NO_MALI_DEFAULT_GPU "tMIx"
+#define CONFIG_MALI_NO_MALI_DEFAULT_GPU "tODx"
 #endif
 
 static char *no_mali_gpu = CONFIG_MALI_NO_MALI_DEFAULT_GPU;
