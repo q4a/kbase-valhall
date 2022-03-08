@@ -150,7 +150,7 @@ static int invent_memory_setup_entry(struct kbase_device *kbdev)
 
 	/* Allocate enough memory for the struct dummy_firmware_interface.
 	 */
-	interface = kzalloc(sizeof(*interface), GFP_KERNEL);
+	interface = vmalloc_user(sizeof(*interface));
 	if (!interface)
 		return -ENOMEM;
 
@@ -1019,7 +1019,8 @@ void kbase_csf_firmware_term(struct kbase_device *kbdev)
 
 		/* NO_MALI: No cleanup in dummy interface necessary */
 
-		kfree(interface);
+		// FIXME LEAK: otherwise we get memory corruption
+		//vfree(interface);
 	}
 
 	/* NO_MALI: No trace buffers to terminate */
@@ -1434,4 +1435,9 @@ void kbase_csf_firmware_mcu_shared_mapping_term(
 
 	vunmap(csf_mapping->cpu_addr);
 	kfree(csf_mapping->phys);
+}
+
+void *kbase_csf_firmware_interface_address(struct kbase_device *kbdev)
+{
+	return kbdev->csf.shared_interface;
 }

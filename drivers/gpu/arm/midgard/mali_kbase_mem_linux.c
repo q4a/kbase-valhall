@@ -90,6 +90,8 @@ static int kbase_csf_cpu_mmap_user_reg_page(struct kbase_context *kctx,
 			struct vm_area_struct *vma);
 static int kbase_csf_cpu_mmap_user_io_pages(struct kbase_context *kctx,
 			struct vm_area_struct *vma);
+static int kbase_csf_cpu_mmap_interface_pages(struct kbase_context *kctx,
+			struct vm_area_struct *vma);
 #endif
 
 static int kbase_vmap_phy_pages(struct kbase_context *kctx,
@@ -2802,6 +2804,10 @@ int kbase_context_mmap(struct kbase_context *const kctx,
 		free_on_close = 1;
 		break;
 #if MALI_USE_CSF
+	case PFN_DOWN(BASEP_MEM_CSF_FIRMWARE_HANDLE):
+		kbase_gpu_vm_unlock(kctx);
+		err = kbase_csf_cpu_mmap_interface_pages(kctx, vma);
+		goto out;
 	case PFN_DOWN(BASEP_MEM_CSF_USER_REG_PAGE_HANDLE):
 		kbase_gpu_vm_unlock(kctx);
 		err = kbase_csf_cpu_mmap_user_reg_page(kctx, vma);
@@ -3516,6 +3522,53 @@ static int kbase_csf_cpu_mmap_user_reg_page(struct kbase_context *kctx,
 
 	vma->vm_ops = &kbase_csf_user_reg_vm_ops;
 	vma->vm_private_data = kctx;
+
+	return 0;
+}
+
+#if (KERNEL_VERSION(4, 11, 0) > LINUX_VERSION_CODE)
+static vm_fault_t kbase_csf_interface_vm_fault(struct vm_area_struct *vma,
+			struct vm_fault *vmf)
+{
+#else
+static vm_fault_t kbase_csf_interface_vm_fault(struct vm_fault *vmf)
+{
+	struct vm_area_struct *vma = vmf->vma;
+#endif
+
+	vmf->page = vmalloc_to_page(vma->vm_private_data +
+				    (vmf->pgoff << PAGE_SHIFT));
+
+        if (!vmf->page)
+            return VM_FAULT_SIGBUS | VM_FAULT_NOPAGE;
+
+	get_page(vmf->page);
+
+	return 0;
+}
+
+static const struct vm_operations_struct kbase_csf_interface_vm_ops = {
+	.fault = kbase_csf_interface_vm_fault,
+};
+
+static int kbase_csf_cpu_mmap_interface_pages(struct kbase_context *kctx,
+			struct vm_area_struct *vma)
+{
+	size_t nr_pages = PFN_DOWN(vma->vm_end - vma->vm_start);
+
+	if (nr_pages > 146)
+		return -EINVAL;
+
+	/* Map uncached */
+	vma->vm_page_prot = pgprot_device(vma->vm_page_prot);
+
+	vma->vm_flags |= VM_DONTCOPY | VM_DONTDUMP | VM_DONTEXPAND | VM_IO;
+
+	vma->vm_ops = &kbase_csf_interface_vm_ops;
+	vma->vm_private_data = kbase_csf_firmware_interface_address(
+		kctx->kbdev);
+
+        vma->vm_pgoff = 0;
 
 	return 0;
 }

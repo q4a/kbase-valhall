@@ -805,4 +805,6 @@ static inline u32 kbase_csf_interface_version(u32 major, u32 minor, u32 patch)
  * Return: 0 if success, or negative error code on failure.
  */
 int kbase_csf_trigger_firmware_config_update(struct kbase_device *kbdev);
+
+void *kbase_csf_firmware_interface_address(struct kbase_device *kbdev);
 #endif
