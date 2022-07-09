@@ -1,6 +1,6 @@
 # kbase-valhall
 
-Valhall kbase for faking a tODx (Mali-G610, used in RK3588) GPU.
+Valhall kbase for faking a lODx (Mali-G610, used in RK3588) GPU.
 
 Usage:
 

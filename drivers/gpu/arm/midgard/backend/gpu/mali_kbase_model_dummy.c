@@ -216,7 +216,7 @@ void *gpu_device_get_data(void *model)
  * in-tree) won't, so define one here in case.
  */
 #ifndef CONFIG_MALI_NO_MALI_DEFAULT_GPU
-#define CONFIG_MALI_NO_MALI_DEFAULT_GPU "tODx"
+#define CONFIG_MALI_NO_MALI_DEFAULT_GPU "lODx"
 #endif
 
 static char *no_mali_gpu = CONFIG_MALI_NO_MALI_DEFAULT_GPU;
@@ -399,6 +399,19 @@ static const struct control_reg_values_t all_control_reg_values[] = {
 	{
 		.name = "tODx",
 		.gpu_id = GPU_ID2_MAKE(10, 8, 0, 2, 0, 0, 0),
+		.as_present = 0xFF,
+		.thread_max_threads = 0x180,
+		.thread_max_workgroup_size = 0x180,
+		.thread_max_barrier_size = 0x180,
+		.thread_features = THREAD_FEATURES_PARTIAL(0x6000, 4, 0),
+		.tiler_features = 0x809,
+		.mmu_features = 0x2830,
+		.gpu_features_lo = 0,
+		.gpu_features_hi = 0,
+	},
+	{
+		.name = "lODx",
+		.gpu_id = GPU_ID2_MAKE(10, 8, 6, 7, 0, 0, 0),
 		.as_present = 0xFF,
 		.thread_max_threads = 0x180,
 		.thread_max_workgroup_size = 0x180,
