@@ -206,7 +206,7 @@ static int invent_cmd_stream_group_info(struct kbase_device *kbdev,
 
 		stream->kbdev = kbdev;
 		stream->features =
-			STREAM_FEATURES_WORK_REGISTERS_SET(0, 80) |
+			STREAM_FEATURES_WORK_REGISTERS_SET(0, 95) |
 			STREAM_FEATURES_SCOREBOARDS_SET(0, 8) |
 			STREAM_FEATURES_COMPUTE_SET(0, 1) |
 			STREAM_FEATURES_FRAGMENT_SET(0, 1) |
